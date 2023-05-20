@@ -25,3 +25,13 @@ On the client side, some light interfacing with the LMQL worker process has to b
 ## TODO
 
 To implement a more lightweight interface, the plan is to adapt `lmql/web/browser-build/src/lmql-worker.js` and `js/lmql.js` to internally use `lmql.run(...)` with a corresponding output writer, instead of the playground interpreter.
+
+## Current Limitations
+
+* The web build currently only support OpenAI models as accessible via the OpenAI API
+
+* The web build relies on a slower (python-only) tokenizer (https://github.com/alisonjf/gpt3-tokenizer), which is not comparable in performance/stability to the `main` branch tokenizer `tiktoken`, which has yet to be ported to WebAssembly/Pyodide environments.
+
+* The web runtime of LMQL can be noticibly slower than the native/non-webassembly runtime, due to the overhead of Pyodide and inter-worker communication.
+
+* The web runtime has some startup time, as the Pyodide/Python interpreter and dependencies are installed and loaded in the worker process.
